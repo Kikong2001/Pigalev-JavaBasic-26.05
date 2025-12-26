@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TaskThreeArray {
     public static void main(String[] args) {
+        Random random = new Random();
         System.out.println("");
         System.out.println("|----------Start program----------|");
         System.out.print("Enter size of array: ");
@@ -15,7 +16,7 @@ public class TaskThreeArray {
         System.out.print("Array: ");
         System.out.print("[");
         for (int i = 0; i <= size-1; i++ ){
-            arrayRandomNumber [i] = ThreadLocalRandom.current().nextInt(1, 20);
+            arrayRandomNumber [i] = random.nextInt(10);
             System.out.print(arrayRandomNumber[i]);
             if(i <= size-2) {
                 System.out.print(",");

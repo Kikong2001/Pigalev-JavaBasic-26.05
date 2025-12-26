@@ -7,7 +7,7 @@ public class TaskFourArray {
         System.out.println("|----------Start program----------|");
         for (int i = 1; i < 90; i++) {
             double radians = Math.toRadians(i);
-            double sinValue = Math.round(Math.sin(radians)*1000000.0)/1000000.0;
+            double sinValue =Math.sin(radians);
             arrayOne[i-1] = sinValue;
         }
         System.out.println();

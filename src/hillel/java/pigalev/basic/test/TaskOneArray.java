@@ -1,9 +1,11 @@
 package hillel.java.pigalev.basic.test;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TaskOneArray {
     public static void main(String[] args) {
+        Random random = new Random();
         int size = 6;
         int evenNumbers = 0;
         int oddNumbers = 0;
@@ -13,7 +15,7 @@ public class TaskOneArray {
         System.out.print("Array: ");
         System.out.print("[");
         for (int i = 0; i <= size-1; i++ ){
-            arrayRandomNumber [i] = ThreadLocalRandom.current().nextInt(1, 20);
+            arrayRandomNumber [i] = random.nextInt(10);
             System.out.print(arrayRandomNumber[i]);
             if(i <= size-2) {
                 System.out.print(",");
