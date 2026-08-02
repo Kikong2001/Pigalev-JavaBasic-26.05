@@ -93,24 +93,6 @@ public class Link implements CustomCollection {
                 currentIndex = currentIndex.next;
             }
         }
-//        for (int i = 0; i < counter; i++) {
-//            if (i == index) {
-//                if (current == first) {
-//                    first = first.next;
-//                } else {
-//                    previous.next = current.next;
-//                    current.next = null;
-//                    counter--;
-//                }
-//            } else {
-//                if (current.next == null) {
-//                    modified =false;
-//                } else {
-//                    previous = current;
-//                    current = current.next;
-//                }
-//            }
-//        }
         return modified;
     }
 
