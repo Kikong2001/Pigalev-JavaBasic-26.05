@@ -1,6 +1,7 @@
 package hillel.java.pigalev.pro.hw4;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class StringCollection {
     private String[] array;
@@ -20,12 +21,13 @@ public class StringCollection {
             newArray[i] = array[i];
         }
         array = newArray;
+        length = newLength;
 
         return array;
     }
 
     public void add(String value) {
-        if ((size + 1) == array.length) {
+        if (size == array.length) {
             array = grow();
         }
         array[size] = value;
@@ -36,44 +38,60 @@ public class StringCollection {
         if ((size + 1) == array.length) {
             array = grow();
         }
-        String[] arrayCopy = new String[array.length];
-        for (int i = 0; i < array.length; i++) {
-            arrayCopy[i] = array[i];
+        if (number > 0 && number < length - 1) {
+            String[] arrayCopy = new String[array.length];
+            for (int i = 0; i < array.length; i++) {
+                arrayCopy[i] = array[i];
+            }
+            for (int k = number; k < arrayCopy.length - 1; k++) {
+                array[k + 1] = arrayCopy[k];
+            }
+            array[number] = value;
+            size += 1;
+        } else {
+            System.out.println("NOT_FOUND_INDEX_OF");
         }
-        for (int k = number; k < arrayCopy.length - 1; k++) {
-            array[k + 1] = arrayCopy[k];
-        }
-        array[number] = value;
-        size += 1;
     }
 
     public void deleted(String value) {
-        int number = 0;
-        for (int i = 0; i <= size - 1; i++) {
-            if (array[i].equals(value)) {
-                size -= 1;
-                number = i;
-                array[i] = null;
-                break;
+        for (int number = 0; number < array.length - 1; number++) {
+            if (value == null) {
+                if (array[number] == null) {
+                    for (int i = number; i < array.length - 1; i++) {
+                        String nextElementValue = array[i];
+                        array[i] = array[i + 1];
+                        array[i + 1] = nextElementValue;
+                    }
+                    break;
+                }
             }
-        }
-        if (number != (array.length - 1)) {
-            for (int i = number; i < array.length - 1; i++) {
-                String nextElementValue = array[i];
-                array[i] = array[i + 1];
-                array[i + 1] = nextElementValue;
+            if (array[number] != null && array[number].equals(value)) {
+                size -= 1;
+                array[number] = null;
+                if (number != (array.length - 1)) {
+                    for (int k = number; k < array.length - 1; k++) {
+                        String nextElementValue = array[k];
+                        array[k] = array[k + 1];
+                        array[k + 1] = nextElementValue;
+                    }
+                }
+                break;
             }
         }
     }
 
     public void deleted(int number) {
-        size -= 1;
-        array[number] = null;
-        if (number != (array.length - 1)) {
-            for (int i = number; i < array.length-1; i++) {
-                String nextElementValue = array[i];
-                array[i] = array[i + 1];
-                array[i + 1] = nextElementValue;
+        if (number > 0 && number < array.length) {
+            if (array[number] != null) {
+                size -= 1;
+                array[number] = null;
+                if (number != (array.length - 1)) {
+                    for (int i = number; i < array.length - 1; i++) {
+                        String nextElementValue = array[i];
+                        array[i] = array[i + 1];
+                        array[i + 1] = nextElementValue;
+                    }
+                }
             }
         }
     }
@@ -83,41 +101,57 @@ public class StringCollection {
     }
 
     public boolean contains(String value) {
-        boolean contains = false;
-        for (int i = 0; i < size; i++) {
-            if (array[i].equals(value)) {
-                contains = true;
+        for (int i = 0; i < array.length; i++) {
+            if (value == null) {
+                if (array[i] == null) {
+                    return true;
+                }
+            } else if (array[i] != null) {
+                if (array[i].equals(value)) {
+                    return true;
+                }
             }
         }
-        return contains;
+        return false;
     }
 
-    public boolean equalsArray(StringCollection arrayComparison) {
-        boolean markerComparison = true;
-        if (this.length == arrayComparison.length) {
-            for (int i = 0; i <= arrayComparison.length - 1; i++)
-                if (!array[i].equals(arrayComparison.array[i])) {
-                    markerComparison = false;
-                    break;
-                }
-        } else {
-            markerComparison = false;
+    public boolean equalsArray(List<String> arrayComparison) {
+        if (arrayComparison == null) {
+            return false;
         }
-        return markerComparison;
+        if (this.length == arrayComparison.size()) {
+            for (int i = 0; i < arrayComparison.size(); i++) {
+                if ((array[i] != null && arrayComparison.get(i) == null) || (array[i] == null && arrayComparison.get(i) != null)) {
+                    return false;
+                }
+                if (array[i] != null && !array[i].equals(arrayComparison.get(i))) {
+                    return false;
+                }
+
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 
     public boolean equalsArray(String[] arrayComparison) {
-        boolean markerComparison = true;
-        if (array.length == arrayComparison.length) {
-            for (int i = 0; i <= arrayComparison.length - 1; i++)
-                if (!array[i].equals(arrayComparison[i])) {
-                    markerComparison = false;
-                    break;
-                }
-        } else {
-            markerComparison = false;
+        if (arrayComparison == null) {
+            return false;
         }
-        return markerComparison;
+        if (array.length == arrayComparison.length) {
+            for (int i = 0; i < arrayComparison.length; i++) {
+                if ((array[i] != null && arrayComparison[i] == null) || (array[i] == null && arrayComparison[i] != null)) {
+                    return false;
+                }
+                if (array[i] != null && !array[i].equals(arrayComparison[i])) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 
     public void clear() {
@@ -127,22 +161,28 @@ public class StringCollection {
                 size -= 1;
             }
         } else {
-            for (int k = 0; k < size; k++) {
-                array[k] = null;
-                size -= 1;
+            for (int k = 0; k < array.length; k++) {
+                if (array[k] != null) {
+                    array[k] = null;
+                    size -= 1;
+                }
             }
         }
     }
 
-    public String indexOf(String value) {
-        String index = "NOT_FOUND_INDEX_OF";
-        for (int i = 0; i <= size - 1; i++) {
-            if (array[i].equals(value)) {
-                index = String.valueOf(i);
-                break;
+    public int indexOf(String value) {
+        for (int i = 0; i < array.length; i++) {
+            if (value == null) {
+                if (array[i] == null) {
+                    return i;
+                }
+            } else if (array[i] != null) {
+                if (array[i].equals(value)) {
+                    return i;
+                }
             }
         }
-        return index;
+        return -1;
     }
 
     public int getSizeArray() {
