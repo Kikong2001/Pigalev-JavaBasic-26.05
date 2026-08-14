@@ -3,9 +3,9 @@ package hillel.java.pigalev.pro.hw5_2;
 import java.util.Collection;
 
 public class Link implements CustomCollection {
-    public Link next;
-    protected MyNode first;
-    protected int counter;
+    private MyNode first;
+    private MyNode last;
+    private int counter;
 
     public Link() {
         this.first = null;
@@ -23,22 +23,19 @@ public class Link implements CustomCollection {
 
     @Override
     public boolean add(String str) {
-//        if (str == null || str.isEmpty()) {
-//            return false;
-//        }
         MyNode newLink = new MyNode(str);
-        newLink.next = first;
-        first = newLink;
-        MyNode current = first;
-        for (int i = 0; current != null; i++) {
-            current.number = i;
-            current = current.next;
+        newLink.number = counter;
+        if (first == null) {
+            newLink.next = first;
+            first = newLink;
+            last = first;
+        } else {
+            newLink.next = null;
+            last.next = newLink;
+            last = newLink;
         }
-        if (str != null) {
-            counter++;
-        }
+        counter++;
         return true;
-
     }
 
     @Override
@@ -101,20 +98,39 @@ public class Link implements CustomCollection {
         MyNode current = first;
         MyNode previous = first;
         boolean modified = false;
-        while (current != null) {
-            if (current.value != null && current.value.equals(str)) {
-                if (current == first) {
-                    first = first.next;  // Замінює посілання first на наступний об'єкт
+        if (str == null) {
+            while (current != null) {
+                if (current.value == null) {
+                    if (current == first) {
+                        first = first.next;  // Замінює посілання first на наступний об'єкт
+                    } else {
+                        previous.next = current.next; // Замінює посілання елемента в середині списку на наступний об'єкт
+                        current.next = null;
+                    }
+                    modified = true;
+                    counter--;
+                    break;
                 } else {
-                    previous.next = current.next; // Замінює посілання елемента в середині списку на наступний об'єкт
+                    previous = current;
+                    current = current.next;
                 }
-                current.next = null;
-                modified = true;
-                counter--;
-                break;
-            } else {
-                previous = current;
-                current = current.next;
+            }
+        } else {
+            while (current != null) {
+                if (current.value != null && current.value.equals(str)) {
+                    if (current == first) {
+                        first = first.next;  // Замінює посілання first на наступний об'єкт
+                    } else {
+                        previous.next = current.next; // Замінює посілання елемента в середині списку на наступний об'єкт
+                    }
+                    current.next = null;
+                    modified = true;
+                    counter--;
+                    break;
+                } else {
+                    previous = current;
+                    current = current.next;
+                }
             }
         }
         if (modified) {
@@ -132,7 +148,7 @@ public class Link implements CustomCollection {
         MyNode current = first;
         while (current != null) {
             if (current.number == index) {
-                return current.number + "-->" + current.value;
+                return current.value;
             } else {
                 current = current.next;
             }
@@ -187,6 +203,7 @@ public class Link implements CustomCollection {
                     current = current.next;
                 }
                 modified = true;
+                counter--;
             } else {
                 previous = current;
                 current = current.next;
@@ -203,14 +220,32 @@ public class Link implements CustomCollection {
     }
 
     public boolean compare(Collection coll) {
+        if (coll.size() != counter) {
+            return false;
+        }
         MyNode current = first;
         for (Object obj : coll) {
             String str = (String) obj;
-            if (!current.value.equals(str)) {
+            if (current.value == null) {
+                if (current.value != str) {
+                    return false;
+                }
+            } else if (!current.value.equals(str)) {
                 return false;
             }
             current = current.next;
         }
         return true;
+    }
+
+    private class MyNode {
+        private String value;
+        private int number;
+        private MyNode next;
+
+        public MyNode(String value) {
+            this.value = value;
+            number = 0;
+        }
     }
 }
